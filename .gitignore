@@ -6,3 +6,7 @@
 
 ### Directories ###
 bin/
+
+### IDE ###
+.settings
+.vscode
