@@ -1,0 +1,37 @@
+apply plugin: 'java'
+version = '1.0'
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'org.apache.derby', name: 'derby', version: '10.14.1.0'
+
+    // https://mvnrepository.com/artifact/javax.mail/javax.mail-api
+    implementation group: 'javax.mail', name: 'javax.mail-api', version: '1.6.1'
+
+    // https://mvnrepository.com/artifact/javax.activation/activation
+    implementation group: 'javax.activation', name: 'activation', version: '1.1.1'
+
+    // https://mvnrepository.com/artifact/org.apache.clerezza.ext/org.json.simple
+    implementation group: 'org.apache.clerezza.ext', name: 'org.json.simple', version: '0.4'
+
+    // https://mvnrepository.com/artifact/junit/junit
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+
+    // https://mvnrepository.com/artifact/org.apache.clerezza.ext/org.json.simple
+    testImplementation group: 'org.apache.clerezza.ext', name: 'org.json.simple', version: '0.4'
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Billing System',
+            'Implementation-Version': version,
+            'Main-Class': 'com.bbloggsbott.billingsystem.Main'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
