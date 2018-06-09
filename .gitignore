@@ -1,0 +1,8 @@
+### Java Class Files ###
+*.class
+
+### Gradle ###
+.gradle
+
+### Directories ###
+bin/
