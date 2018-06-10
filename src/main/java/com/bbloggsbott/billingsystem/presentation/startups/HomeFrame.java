@@ -1,7 +1,10 @@
 package com.bbloggsbott.billingsystem.presentation.startups;
 
 import com.bbloggsbott.billingsystem.integration.dbusersdao.User;
+import com.bbloggsbott.billingsystem.presentation.billing.BillingFrame;
 import com.bbloggsbott.billingsystem.presentation.producthandling.AddProductFrame;
+import com.bbloggsbott.billingsystem.presentation.producthandling.DeleteProductFrame;
+import com.bbloggsbott.billingsystem.presentation.producthandling.UpdateProductFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -79,5 +82,15 @@ public class HomeFrame extends JFrame implements ActionListener {
         if(e.getSource() == addProduct){
             AddProductFrame apf = new AddProductFrame();
         }
+        else if(e.getSource() == deleteProduct){
+            DeleteProductFrame dpf = new DeleteProductFrame();
+        }
+        else if(e.getSource() == updateProduct){
+            UpdateProductFrame upf = new UpdateProductFrame();
+        }
+        else if(e.getSource() == billing){
+            BillingFrame bf = new BillingFrame(user);
+        }
+        
     }
 }
