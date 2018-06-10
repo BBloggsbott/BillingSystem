@@ -1,7 +1,9 @@
 package com.bbloggsbott.billingsystem;
 
+import com.bbloggsbott.billingsystem.presentation.startups.LoginFrame;
+
 public class Main{
     public static void main(String[] args) {
-        System.out.println("Working");
+        LoginFrame lf = new LoginFrame();
     }
 }

@@ -5,6 +5,7 @@ import com.bbloggsbott.billingsystem.exceptions.UserNotFoundException;
 import com.bbloggsbott.billingsystem.integration.dbusersdao.User;
 import com.bbloggsbott.billingsystem.presentation.springutils.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,9 +23,13 @@ public class LoginFrame extends JFrame implements ActionListener {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel panel = new JPanel(new SpringLayout());
-        ImageIcon img = new ImageIcon("resources/billLogo.png");
-        setIconImage(img.getImage());
-
+        try{
+            ImageIcon img = new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("billLogo.png")));
+            setIconImage(img.getImage());
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
 
         username = new JLabel("Username:");
         usernameText = new JTextField(15);

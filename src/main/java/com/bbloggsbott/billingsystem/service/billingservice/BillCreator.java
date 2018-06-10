@@ -11,6 +11,8 @@ import com.bbloggsbott.billingsystem.service.billingservice.wagu.components.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Iterator;
@@ -27,6 +29,7 @@ public class BillCreator {
     String summary, summaryVal;
     User user;
     String customerEmail, billNo;
+    static ClassLoader classLoader;
 
     public BillCreator(User user, String customerName,String customerEmail, String billNo, List<List<String>> items, double total){
         this.user = user;
@@ -44,6 +47,7 @@ public class BillCreator {
         t3Desc = "Summary";
         summary = "TOTAL: \n";
         summaryVal = Double.toString(total)+"\n";
+        classLoader = getClass().getClassLoader();
 
     }
 
@@ -74,7 +78,7 @@ public class BillCreator {
     public static int getBillNo(){
         JSONParser parser = new JSONParser();
         try{
-            FileReader fr = new FileReader("billing.json");
+            FileReader fr = new FileReader(new File(classLoader.getResource("billing.json").toURI()));
             Object obj = parser.parse(fr);
             JSONObject jsonObject = (JSONObject) obj;
             String billNo = (String) jsonObject.get("billNo");

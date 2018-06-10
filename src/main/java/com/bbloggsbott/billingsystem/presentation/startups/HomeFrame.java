@@ -6,6 +6,7 @@ import com.bbloggsbott.billingsystem.presentation.producthandling.AddProductFram
 import com.bbloggsbott.billingsystem.presentation.producthandling.DeleteProductFrame;
 import com.bbloggsbott.billingsystem.presentation.producthandling.UpdateProductFrame;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,8 +23,12 @@ public class HomeFrame extends JFrame implements ActionListener {
     public HomeFrame(User user){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel panel = new JPanel(new SpringLayout());
-        ImageIcon img = new ImageIcon("resources/billLogo.png");
-        this.user = user;
+        try {
+            ImageIcon img = new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("billLogo.png")));
+            setIconImage(img.getImage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         top = new JPanel();
         top.setLayout(new FlowLayout());
         bottom = new JPanel();

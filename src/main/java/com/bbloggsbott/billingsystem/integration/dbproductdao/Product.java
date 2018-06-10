@@ -153,4 +153,9 @@ public class Product {
         return false;
     }
 
+    public String[] toStringArray(){
+        String[] toreturn = {Integer.toString(ID), Name, buyPrice.toString(), sellPrice.toString(), type, stock.toString()};
+        return toreturn;
+    }
+
 }

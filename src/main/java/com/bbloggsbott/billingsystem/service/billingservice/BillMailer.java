@@ -1,5 +1,6 @@
 package com.bbloggsbott.billingsystem.service.billingservice;
 
+import java.io.PrintWriter;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -21,6 +22,17 @@ public class BillMailer {
     }
 
     public boolean mailBill(String bill, String customerEmail, String billNo){
+
+        try{
+            PrintWriter writer;
+            writer = new PrintWriter("bills/"+billNo+".txt", "UTF-8");
+            writer.println(bill);
+            writer.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -39,7 +51,7 @@ public class BillMailer {
             Multipart multipart = new MimeMultipart();
 
             messageBodyPart = new MimeBodyPart();
-            String file = billNo+".txt";
+            String file = "bills/"+billNo+".txt";
             String fileName = "Bill";
             DataSource source = new FileDataSource(file);
             messageBodyPart.setDataHandler(new DataHandler(source));
