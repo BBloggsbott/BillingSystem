@@ -1,20 +1,26 @@
 package com.bbloggsbott.billingsystem.presentation.billing;
 
-import com.bbloggsbott.billingsystem.integration.dbusersdao.*;
-import com.bbloggsbott.billingsystem.service.billingservice.BillCreator;
-import com.bbloggsbott.billingsystem.service.productservice.ProductLookup;
-import com.bbloggsbott.billingsystem.integration.dbproductdao.*;
-
-import javax.swing.*;
-import javax.swing.table.*;
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+import com.bbloggsbott.billingsystem.integration.dbproductdao.Product;
+import com.bbloggsbott.billingsystem.integration.dbusersdao.User;
+import com.bbloggsbott.billingsystem.service.billingservice.BillCreator;
+import com.bbloggsbott.billingsystem.service.productservice.ProductLookup;
 
 public class BillingFrame extends JFrame implements ActionListener{
     JLabel title, idLabel, nameLabel, priceLabel, qtyLabel, rateLabel, totalLabel, customerNameLabel,
