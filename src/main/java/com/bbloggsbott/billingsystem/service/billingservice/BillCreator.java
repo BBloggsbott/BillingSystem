@@ -29,7 +29,6 @@ public class BillCreator {
     String summary, summaryVal;
     User user;
     String customerEmail, billNo;
-    static ClassLoader classLoader;
 
     public BillCreator(User user, String customerName,String customerEmail, String billNo, List<List<String>> items, double total){
         this.user = user;
@@ -47,7 +46,6 @@ public class BillCreator {
         t3Desc = "Summary";
         summary = "TOTAL: \n";
         summaryVal = Double.toString(total)+"\n";
-        classLoader = getClass().getClassLoader();
 
     }
 
@@ -75,20 +73,20 @@ public class BillCreator {
         return false;
     }
 
-    public static int getBillNo(){
+    public static Long getBillNo(){
         JSONParser parser = new JSONParser();
         try{
-            FileReader fr = new FileReader(new File(classLoader.getResource("billing.json").toURI()));
+            FileReader fr = new FileReader(new File("billing.json"));
             Object obj = parser.parse(fr);
             JSONObject jsonObject = (JSONObject) obj;
-            String billNo = (String) jsonObject.get("billNo");
+            Long billNo = (Long) jsonObject.get("billNo");
             fr.close();
-            return Integer.parseInt(billNo);
+            return billNo;
         }
         catch(Exception e){
             e.printStackTrace();
         }
-        return -1;
+        return new Long(-1);
     }
 
     public static boolean incrementBillNo(){
@@ -99,9 +97,9 @@ public class BillCreator {
             JSONObject jsonObject = (JSONObject) obj;
             fr.close();
             FileWriter fw = new FileWriter("billing.json");
-            int billNo = Integer.parseInt((String) jsonObject.get("billNo"));
+            Long billNo = (Long) jsonObject.get("billNo");
             billNo += 1;
-            jsonObject.put("billNo",Integer.toString(billNo));
+            jsonObject.put("billNo",billNo);
             fw.write(jsonObject.toJSONString());
             fw.close();
             return true;

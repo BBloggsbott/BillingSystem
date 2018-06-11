@@ -57,11 +57,11 @@ public class User {
         this.admin = admin.equalsIgnoreCase("Yes");
     }
     public static boolean createTable(){
-        Connection conn = ConnectionFactory.getConnection("products");
+        Connection conn = ConnectionFactory.getConnection("Users");
         try {
             assert conn != null;
             Statement s = conn.createStatement();
-            s.executeUpdate("create table users (username varchar(20) primary key, name varchar(50), password varchar(30), admin varchar(3)");
+            s.executeUpdate("create table users (username varchar(20) primary key, name varchar(50), password varchar(30), admin boolean)");
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -108,9 +108,11 @@ public class User {
             ps.setString(1, userName);
             ResultSet rs = ps.executeQuery();
             if(!rs.next()) {
-                ps = conn.prepareStatement("insert into users values(?,?)");
+                ps = conn.prepareStatement("insert into users values(?,?,?,?)");
                 ps.setString(1, userName);
-                ps.setString(2, password);
+                ps.setString(2, name);
+                ps.setString(3, password);
+                ps.setBoolean(4, admin);
                 ps.executeUpdate();
                 return true;
             }

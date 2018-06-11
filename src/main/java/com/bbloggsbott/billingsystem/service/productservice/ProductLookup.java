@@ -22,6 +22,7 @@ public class ProductLookup {
             while(rs.next()){
                 products.add(new Product(rs.getInt("id"),rs.getString("name"),rs.getBigDecimal("buyprice"),rs.getBigDecimal("sellprice"),rs.getString("type"),rs.getBigDecimal("stock")));
             }
+            System.out.println("No: of products: "+products.size());
             return products;
         } catch (SQLException e) {
             e.printStackTrace();
