@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'org.apache.derby', name: 'derby', version: '10.14.1.0'
+    implementation group: 'org.apache.derby', name: 'derby', version: '10.14.2.0'
 
     // https://mvnrepository.com/artifact/javax.mail/javax.mail-api
     implementation group: 'javax.mail', name: 'javax.mail-api', version: '1.6.1'
@@ -20,7 +20,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.clerezza.ext/org.json.simple
     implementation group: 'org.apache.clerezza.ext', name: 'org.json.simple', version: '0.4'
 
-    shadow group: 'org.apache.derby', name: 'derby', version: '10.14.1.0'
+    shadow group: 'org.apache.derby', name: 'derby', version: '10.14.2.0'
 
     // https://mvnrepository.com/artifact/javax.mail/javax.mail-api
     shadow group: 'javax.mail', name: 'javax.mail-api', version: '1.6.1'
