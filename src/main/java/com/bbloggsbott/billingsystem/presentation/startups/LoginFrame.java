@@ -69,7 +69,7 @@ public class LoginFrame extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this,"Please Enter Password");
             }
             else{
-                user = new User(usernameText.getText(), Arrays.toString(passwordText.getPassword()));
+                user = new User(usernameText.getText(), new String(passwordText.getPassword()));
                 try {
                     user.login();
                     setVisible(false);

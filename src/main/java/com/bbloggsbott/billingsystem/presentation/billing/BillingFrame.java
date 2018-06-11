@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import com.bbloggsbott.billingsystem.integration.dbproductdao.Product;
@@ -28,7 +30,7 @@ public class BillingFrame extends JFrame implements ActionListener {
     JTextField id, name, rate, qty, price, total, customerName, customerEmail, billNo;
     JTable billTable;
     DefaultTableModel billTableModel;
-    JButton addButton, deleteButton, generateBillButton;
+    JButton addButton, deleteButton, generateBillButton, getProduct;
     JPanel header, content, footer;
     User user;
     Product product;
@@ -37,7 +39,7 @@ public class BillingFrame extends JFrame implements ActionListener {
     Object[][] itemsData = { { "Empty", "0", "0", "0" } };
     ArrayList<String> toAdd;
     double sellPrice, totalPrice;
-    int billNoValue;
+    Long billNoValue;
 
     public BillingFrame(User user) {
         setLayout(new BorderLayout(10, 5));
@@ -68,6 +70,7 @@ public class BillingFrame extends JFrame implements ActionListener {
         customerEmailLabel = new JLabel("Customer Email");
         customerEmail = new JTextField(10);
 
+        getProduct = new JButton("Get Product");
         addButton = new JButton("Add");
         deleteButton = new JButton("Delete");
         generateBillButton = new JButton("Generate");
@@ -78,7 +81,7 @@ public class BillingFrame extends JFrame implements ActionListener {
 
         JPanel billNoPanel = new JPanel(new FlowLayout());
         billNoLabel = new JLabel("Bill No");
-        billNo = new JTextField(Integer.toString(billNoValue), 5);
+        billNo = new JTextField(Long.toString(billNoValue), 5);
         billNoPanel.add(billNoLabel);
         billNoPanel.add(billNo);
 
@@ -98,6 +101,7 @@ public class BillingFrame extends JFrame implements ActionListener {
         footer.add(footer1);
         footer.add(footer2);
         JPanel footer3 = new JPanel(new FlowLayout());
+        footer3.add(getProduct);
         footer3.add(addButton);
         footer3.add(deleteButton);
         footer3.add(generateBillButton);
@@ -134,8 +138,7 @@ public class BillingFrame extends JFrame implements ActionListener {
 
         addButton.addActionListener(this);
         deleteButton.addActionListener(this);
-        id.addActionListener(this);
-        qty.addActionListener(this);
+        getProduct.addActionListener(this);
         generateBillButton.addActionListener(this);
 
         setSize(900, 400);
@@ -146,6 +149,10 @@ public class BillingFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addButton) {
             if (!id.getText().isEmpty() && !qty.getText().isEmpty()) {
+                double sellRate = product.getSellPrice().doubleValue();
+                rate.setText(Double.toString(sellRate));
+                sellPrice = sellRate * Double.parseDouble(qty.getText());
+                price.setText(Double.toString(sellPrice));
                 toAdd.clear();
                 toAdd.add(name.getText());
                 toAdd.add(rate.getText());
@@ -158,32 +165,35 @@ public class BillingFrame extends JFrame implements ActionListener {
             }
         } else if (e.getSource() == deleteButton) {
             items.remove(billTable.getSelectedRow());
+            Double value = Double.parseDouble((String) billTableModel.getValueAt(billTable.getSelectedRow(), 3));
+            total.setText(Double.toString(Double.parseDouble(total.getText())-value));
             billTableModel.removeRow(billTable.getSelectedRow());
-        } else if (e.getSource() == id) {
-            qty.setText("1");
-            product = ProductLookup.lookupByID(Integer.parseInt(id.getText())).get(0);
-            double sellRate = product.getSellPrice().doubleValue();
-            rate.setText(Double.toString(sellRate));
-            sellPrice = sellRate * Double.parseDouble(qty.getText());
-            price.setText(Double.toString(sellPrice));
         } else if (e.getSource() == qty) {
-            if (!id.getText().isEmpty()) {
-                double sellRate = product.getSellPrice().doubleValue();
-                rate.setText(Double.toString(sellRate));
-                sellPrice = sellRate * Double.parseDouble(qty.getText());
-                price.setText(Double.toString(sellPrice));
-            }
+            
         } else if (e.getSource() == generateBillButton) {
             if (!customerName.getText().isEmpty() && !customerEmail.getText().isEmpty()) {
                 BillCreator bc = new BillCreator(user, customerName.getText(), customerEmail.getText(),
-                        Integer.toString(billNoValue), BillCreator.processForPrinting(items), totalPrice);
+                        Long.toString(billNoValue), BillCreator.processForPrinting(items), totalPrice);
                 if (bc.gernerateAndMailBill()) {
                     BillCreator.incrementBillNo();
                     dispose();
                 }
             }
         }
+        else if(e.getSource() == getProduct){
+            if(qty.getText().isEmpty()){
+                qty.setText("1");
+            }
+            product = ProductLookup.lookupByID(Integer.parseInt(id.getText())).get(0);
+            double sellRate = product.getSellPrice().doubleValue();
+            rate.setText(Double.toString(sellRate));
+            sellPrice = sellRate * Double.parseDouble(qty.getText());
+            price.setText(Double.toString(sellPrice));
+            name.setText(product.getName());
+        }
     }
+
+    
 
     public String[][] getItemsData(List<String[]> items) {
         String[][] itemsData = new String[items.size()][];
@@ -200,3 +210,4 @@ public class BillingFrame extends JFrame implements ActionListener {
     }
 
 }
+

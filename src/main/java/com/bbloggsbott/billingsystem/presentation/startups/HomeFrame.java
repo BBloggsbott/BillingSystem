@@ -76,6 +76,11 @@ public class HomeFrame extends JFrame implements ActionListener {
             userManagement.addActionListener(this);
         }
 
+        addProduct.addActionListener(this);
+        deleteProduct.addActionListener(this);
+        updateProduct.addActionListener(this);
+        billing.addActionListener(this);
+
         setVisible(true);
         add(top,BorderLayout.NORTH);
         add(bottom,BorderLayout.CENTER);
