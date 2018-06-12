@@ -1,6 +1,9 @@
 ### Java Class Files ###
 *.class
 
+### Build Files ###
+build/
+
 ### Gradle ###
 .gradle
 
