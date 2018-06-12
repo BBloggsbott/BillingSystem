@@ -23,6 +23,7 @@ import com.bbloggsbott.billingsystem.integration.dbproductdao.Product;
 import com.bbloggsbott.billingsystem.integration.dbusersdao.User;
 import com.bbloggsbott.billingsystem.service.billingservice.BillCreator;
 import com.bbloggsbott.billingsystem.service.productservice.ProductLookup;
+import com.bbloggsbott.billingsystem.service.productservice.StockUpdater;
 
 public class BillingFrame extends JFrame implements ActionListener {
     JLabel title, idLabel, nameLabel, priceLabel, qtyLabel, rateLabel, totalLabel, customerNameLabel,
@@ -35,7 +36,7 @@ public class BillingFrame extends JFrame implements ActionListener {
     User user;
     Product product;
     boolean newBill;
-    List<String[]> items;
+    List<String[]> items, billProducts;
     Object[][] itemsData = { { "Empty", "0", "0", "0" } };
     ArrayList<String> toAdd;
     double sellPrice, totalPrice;
@@ -123,6 +124,7 @@ public class BillingFrame extends JFrame implements ActionListener {
 
         String[] columnNames = { "Name", "Rate", "Qty", "Price" };
         items = new ArrayList<String[]>();
+        billProducts = new ArrayList<String[]>();
         billTableModel = new DefaultTableModel();
         for (int i = 0; i < 4; i++)
             billTableModel.addColumn(columnNames[i]);
@@ -158,13 +160,16 @@ public class BillingFrame extends JFrame implements ActionListener {
                 toAdd.add(rate.getText());
                 toAdd.add(qty.getText());
                 toAdd.add(price.getText());
+                billProducts.add(getIdStock());
                 totalPrice = totalPrice + sellPrice;
                 total.setText(Double.toString(totalPrice));
                 items.add(toStringArray(toAdd));
+                System.out.println(items);
                 billTableModel.addRow(items.get(items.size() - 1));
             }
         } else if (e.getSource() == deleteButton) {
             items.remove(billTable.getSelectedRow());
+            billProducts.remove(billTable.getSelectedRow());
             Double value = Double.parseDouble((String) billTableModel.getValueAt(billTable.getSelectedRow(), 3));
             total.setText(Double.toString(Double.parseDouble(total.getText())-value));
             billTableModel.removeRow(billTable.getSelectedRow());
@@ -172,6 +177,9 @@ public class BillingFrame extends JFrame implements ActionListener {
             
         } else if (e.getSource() == generateBillButton) {
             if (!customerName.getText().isEmpty() && !customerEmail.getText().isEmpty()) {
+                if(!StockUpdater.reduceStock(billProducts)){
+                    return;
+                }
                 BillCreator bc = new BillCreator(user, customerName.getText(), customerEmail.getText(),
                         Long.toString(billNoValue), BillCreator.processForPrinting(items), totalPrice);
                 if (bc.gernerateAndMailBill()) {
@@ -207,6 +215,11 @@ public class BillingFrame extends JFrame implements ActionListener {
     public String[] toStringArray(ArrayList<String> al) {
         String[] toReturn = { al.get(0), al.get(1), al.get(2), al.get(3) };
         return toReturn;
+    }
+
+    public String[] getIdStock(){
+        String[] toreturn = {id.getText(),qty.getText()};
+        return toreturn;
     }
 
 }

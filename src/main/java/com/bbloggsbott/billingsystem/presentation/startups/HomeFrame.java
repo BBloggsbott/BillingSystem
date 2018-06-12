@@ -4,6 +4,7 @@ import com.bbloggsbott.billingsystem.integration.dbusersdao.User;
 import com.bbloggsbott.billingsystem.presentation.billing.BillingFrame;
 import com.bbloggsbott.billingsystem.presentation.producthandling.AddProductFrame;
 import com.bbloggsbott.billingsystem.presentation.producthandling.DeleteProductFrame;
+import com.bbloggsbott.billingsystem.presentation.producthandling.SearchProductFrame;
 import com.bbloggsbott.billingsystem.presentation.producthandling.UpdateProductFrame;
 
 import javax.imageio.ImageIO;
@@ -80,6 +81,7 @@ public class HomeFrame extends JFrame implements ActionListener {
         deleteProduct.addActionListener(this);
         updateProduct.addActionListener(this);
         billing.addActionListener(this);
+        searchProduct.addActionListener(this);
 
         setVisible(true);
         add(top,BorderLayout.NORTH);
@@ -100,6 +102,9 @@ public class HomeFrame extends JFrame implements ActionListener {
         }
         else if(e.getSource() == billing){
             BillingFrame bf = new BillingFrame(user);
+        }
+        else if(e.getSource() == searchProduct){
+            SearchProductFrame spf = new SearchProductFrame();
         }
         
     }

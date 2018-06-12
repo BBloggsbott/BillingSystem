@@ -3,12 +3,17 @@ package com.bbloggsbott.billingsystem.presentation.producthandling;
 import com.bbloggsbott.billingsystem.integration.dbproductdao.Product;
 import com.bbloggsbott.billingsystem.presentation.springutils.*;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.math.BigDecimal;
 
 public class AddProductFrame extends JFrame implements ActionListener, ItemListener {
@@ -20,10 +25,12 @@ public class AddProductFrame extends JFrame implements ActionListener, ItemListe
     JButton addButton, clearButton;
     Product product;
     boolean typeValue;
+    JSONObject jsonObject;
 
     public AddProductFrame(){
         title = new JLabel("Add Product");
         idLabel = new JLabel("ID");
+        id.setEditable(false);
         nameLabel = new JLabel("Name");
         buyLabel = new JLabel("Buy Price");
         sellLabel = new JLabel("Sell Price");
@@ -63,6 +70,17 @@ public class AddProductFrame extends JFrame implements ActionListener, ItemListe
         add(content, BorderLayout.CENTER);
         add(footer, BorderLayout.SOUTH);
 
+        JSONParser parser = new JSONParser();
+        try {
+            FileReader fr = new FileReader("billing.json");
+            Object obj = parser.parse(fr);
+            jsonObject = (JSONObject) obj;
+            fr.close();
+            id.setText((String) jsonObject.get("productID"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         addButton.addActionListener(this);
         clearButton.addActionListener(this);
         type.addItemListener(this);
@@ -84,11 +102,23 @@ public class AddProductFrame extends JFrame implements ActionListener, ItemListe
         else if(e.getSource() == addButton){
             product = new Product(Integer.parseInt(id.getText()),name.getText(),new BigDecimal(buy.getText()),new BigDecimal(sell.getText()),Boolean.toString(typeValue),new BigDecimal(stock.getText()));
             if(product.insertProduct()){
-                id.setText(Integer.parseInt(id.getText())+"");
+                int newID = Integer.parseInt(id.getText())+1;
+                id.setText(newID+"");
+                try{
+                FileWriter fw = new FileWriter("billing.json");
+                jsonObject.put("productID",new Long(newID));
+                fw.write(jsonObject.toJSONString());
+                fw.close();
+                }
+                catch(Exception ex){
+                    ex.printStackTrace();
+                }
+                finally{
                 name.setText("");
                 buy.setText("");
                 sell.setText("");
                 stock.setText("");
+                }
             }
         }
     }

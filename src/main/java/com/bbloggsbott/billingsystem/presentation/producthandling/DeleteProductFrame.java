@@ -13,7 +13,7 @@ public class DeleteProductFrame extends JFrame implements ActionListener {
 
     JLabel idLabel, nameLabel, title;
     JTextField id, name;
-    JButton deleteButton;
+    JButton deleteButton, getProduct;
     JPanel header, content, footer;
     Product product;
 
@@ -29,8 +29,10 @@ public class DeleteProductFrame extends JFrame implements ActionListener {
         name = new JTextField();
         name.setEditable(false);
         deleteButton = new JButton("Delete");
+        getProduct = new JButton("Get Product");
 
         header.add(title);
+        footer.add(getProduct);
         footer.add(deleteButton);
 
         content.add(idLabel);
@@ -43,8 +45,8 @@ public class DeleteProductFrame extends JFrame implements ActionListener {
         add(footer, BorderLayout.SOUTH);
         add(content, BorderLayout.CENTER);
 
-        id.addActionListener(this);
         deleteButton.addActionListener(this);
+        getProduct.addActionListener(this);
 
         setVisible(true);
         setSize(300, 300);
@@ -53,14 +55,9 @@ public class DeleteProductFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == id){
-            try {
-                product = ProductLookup.lookupByID(Integer.parseInt(id.getText())).get(0);
-                name.setText(product.getName());
-            }
-            catch(IndexOutOfBoundsException ie){
-                name.setText("Product not Found");
-            }
+        if(e.getSource() == getProduct){
+            product = ProductLookup.lookupByID(Integer.parseInt(id.getText())).get(0);
+            name.setText(product.getName());
         }
         else if(e.getSource() == deleteButton){
             product = new Product(Integer.parseInt(id.getText()));
