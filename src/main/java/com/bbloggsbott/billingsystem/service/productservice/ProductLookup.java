@@ -34,8 +34,8 @@ public class ProductLookup {
     public static ArrayList<Product> lookupByName(String name){
         ArrayList<Product> products = new ArrayList<Product>();
         try {
-            PreparedStatement ps = conn.prepareStatement("select * from products where name like %?%");
-            ps.setString(1,name);
+            PreparedStatement ps = conn.prepareStatement("select * from products where name like ?");
+            ps.setString(1,"%"+name+"%");
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 products.add(new Product(rs.getInt("id"),rs.getString("name"),rs.getBigDecimal("buyprice"),rs.getBigDecimal("sellprice"),rs.getString("type"),rs.getBigDecimal("stock")));

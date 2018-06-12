@@ -30,13 +30,13 @@ public class AddProductFrame extends JFrame implements ActionListener, ItemListe
     public AddProductFrame(){
         title = new JLabel("Add Product");
         idLabel = new JLabel("ID");
-        id.setEditable(false);
         nameLabel = new JLabel("Name");
         buyLabel = new JLabel("Buy Price");
         sellLabel = new JLabel("Sell Price");
         typeLabel = new JLabel("Type");
         stockLabel = new JLabel("Stock");
         id = new JTextField();
+        id.setEditable(false);
         name = new JTextField();
         buy = new JTextField();
         sell = new JTextField();
@@ -76,7 +76,8 @@ public class AddProductFrame extends JFrame implements ActionListener, ItemListe
             Object obj = parser.parse(fr);
             jsonObject = (JSONObject) obj;
             fr.close();
-            id.setText((String) jsonObject.get("productID"));
+            Long ID = (Long) jsonObject.get("productID");
+            id.setText(Long.toString(ID));
         } catch (Exception e) {
             e.printStackTrace();
         }

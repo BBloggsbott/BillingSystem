@@ -61,7 +61,10 @@ public class DeleteProductFrame extends JFrame implements ActionListener {
         }
         else if(e.getSource() == deleteButton){
             product = new Product(Integer.parseInt(id.getText()));
-            product.deleteProduct();
+            if(product.deleteProduct()){
+                name.setText("");
+                id.setText("");
+            }
         }
     }
 }

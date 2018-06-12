@@ -41,13 +41,13 @@ public class SearchProductFrame extends JFrame implements ActionListener{
         JPanel header1 = new JPanel(new FlowLayout());
         JPanel header2 = new JPanel(new FlowLayout());
         JPanel header3 = new JPanel(new FlowLayout());
-        JPanel header4 = new JPanel(new FlowLayout());
+        JPanel footer = new JPanel(new FlowLayout());
         header1.add(title);
         header2.add(idLabel);
         header2.add(id);
         header3.add(nameLabel);
         header3.add(name);
-        header4.add(getProduct);
+        footer.add(getProduct);
 
         header.add(header1);
         header.add(header2);
@@ -66,6 +66,7 @@ public class SearchProductFrame extends JFrame implements ActionListener{
 
         add(header, BorderLayout.NORTH);
         add(content, BorderLayout.CENTER);
+        add(footer, BorderLayout.SOUTH);
 
         getProduct.addActionListener(this);
 

@@ -111,6 +111,7 @@ public class Product {
             ps.setString(5,type);
             ps.setBigDecimal(6,stock);
             ps.executeUpdate();
+            conn.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -121,11 +122,13 @@ public class Product {
 
     public boolean deleteProduct(){
         conn = ConnectionFactory.getConnection("products");
-        PreparedStatement ps = null;
+        PreparedStatement ps;
         try {
             assert conn != null;
             ps = conn.prepareStatement("delete from products where ID = ?");
             ps.setInt(1, ID);
+            ps.executeUpdate();
+            conn.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -146,6 +149,7 @@ public class Product {
             ps.setBigDecimal(5,stock);
             ps.setInt(6, ID);
             ps.executeUpdate();
+            conn.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

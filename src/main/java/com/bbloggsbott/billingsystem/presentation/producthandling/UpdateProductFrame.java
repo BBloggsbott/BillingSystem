@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 
 import com.bbloggsbott.billingsystem.integration.dbproductdao.Product;
 import com.bbloggsbott.billingsystem.presentation.springutils.*;
+import com.bbloggsbott.billingsystem.service.productservice.ProductLookup;
 
 
 public class UpdateProductFrame extends JFrame implements ActionListener, ItemListener{
@@ -17,12 +18,12 @@ public class UpdateProductFrame extends JFrame implements ActionListener, ItemLi
     JLabel title, idLabel, nameLabel, buyLabel, sellLabel, typeLabel, stockLabel;
     JTextField id, name, buy, sell, stock;
     JCheckBox type;
-    JButton updateButton, clearButton;
+    JButton updateButton, clearButton, getProduct;
     Product product;
     boolean typeValue;
 
     public UpdateProductFrame(){
-        title = new JLabel("Add Product");
+        title = new JLabel("Update Product");
         idLabel = new JLabel("ID");
         nameLabel = new JLabel("Name");
         buyLabel = new JLabel("Buy Price");
@@ -36,8 +37,9 @@ public class UpdateProductFrame extends JFrame implements ActionListener, ItemLi
         stock = new JTextField();
         type = new JCheckBox("No.s");       //If unchecked, Considers as Kgs
         typeValue = false;
-        updateButton = new JButton("Add");
+        updateButton = new JButton("Update");
         clearButton = new JButton("Clear");
+        getProduct = new JButton("Get Product");
         header = new JPanel( new FlowLayout());
         content = new JPanel(new SpringLayout());
         footer = new JPanel(new FlowLayout());
@@ -56,6 +58,7 @@ public class UpdateProductFrame extends JFrame implements ActionListener, ItemLi
         content.add(stock);
         SpringUtilities.makeGrid(content,2,6,10,20,10,10);
         header.add(title);
+        footer.add(getProduct);
         footer.add(updateButton);
         footer.add(clearButton);
         content.setSize(800,300);
@@ -65,6 +68,7 @@ public class UpdateProductFrame extends JFrame implements ActionListener, ItemLi
 
         updateButton.addActionListener(this);
         clearButton.addActionListener(this);
+        getProduct.addActionListener(this);
         type.addItemListener(this);
 
         setVisible(true);
@@ -89,6 +93,15 @@ public class UpdateProductFrame extends JFrame implements ActionListener, ItemLi
                 sell.setText("");
                 stock.setText("");
             }
+        }
+        else if(e.getSource() == getProduct){
+            product = ProductLookup.lookupByID(Integer.parseInt(id.getText())).get(0);
+            name.setText(product.getName());
+            sell.setText(Double.toString(product.getSellPrice().doubleValue()));
+            buy.setText(Double.toString(product.getBuyPrice().doubleValue()));
+            stock.setText(Double.toString((product.getStock().doubleValue())));
+            typeValue = Boolean.parseBoolean(product.getType());
+            type.setSelected(typeValue);
         }
     }
 
