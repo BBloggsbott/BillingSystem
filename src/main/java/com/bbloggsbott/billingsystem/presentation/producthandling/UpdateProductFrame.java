@@ -1,5 +1,6 @@
 package com.bbloggsbott.billingsystem.presentation.producthandling;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -23,6 +24,14 @@ public class UpdateProductFrame extends JFrame implements ActionListener, ItemLi
     boolean typeValue;
 
     public UpdateProductFrame(){
+        setTitle("Update Product");
+        try {
+            ImageIcon img = new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("billLogo.png")));
+            setIconImage(img.getImage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         title = new JLabel("Update Product");
         idLabel = new JLabel("ID");
         nameLabel = new JLabel("Name");

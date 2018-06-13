@@ -17,11 +17,12 @@ public class StockUpdater{
         while(itr.hasNext()){
             element = products.get(i);
             product = ProductLookup.lookupByID(Integer.parseInt(element[0])).get(0);
-            stockUpdate = new BigDecimal(element[1]);
+            stockUpdate = new BigDecimal(element[i]);
             product.setStock(product.getStock().subtract(stockUpdate));
             if(!product.updateProduct()){
                 return false;
             }
+            itr.next();
         }
         return true;
     }

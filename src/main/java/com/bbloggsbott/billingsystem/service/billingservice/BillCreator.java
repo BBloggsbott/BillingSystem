@@ -6,12 +6,19 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+
 import com.bbloggsbott.billingsystem.service.billingservice.wagu.components.*;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.awt.FlowLayout;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -61,14 +68,26 @@ public class BillCreator {
         Block summaryValBlock = new Block(b, 12, 9, summaryVal).allowGrid(false).setDataAlign(Block.DATA_MIDDLE_RIGHT);
         summaryBlock.setRightBlock(summaryValBlock);
         String bill = b.invalidate().build().getPreview();
-        bill = bill+"\nUser: "+user.getName()+"("+user.getUserName()+")\n";
+        bill = bill+"\nUser: "+user.getName();
+        bill = bill+"("+user.getUserName()+")\n";
         return bill;
     }
 
     public boolean gernerateAndMailBill(){
-        BillMailer bm = new BillMailer();
-        if(bm.mailBill(generateBill(), customerEmail, billNo)){
-            return true;
+        String password;
+        JPanel forPassword = new JPanel(new FlowLayout());
+        JLabel passLabel = new JLabel("Password: ");
+        JPasswordField pass = new JPasswordField(10);
+        forPassword.add(passLabel);
+        forPassword.add(pass);
+        String[] options = {"OK","Cancel"};
+        int option = JOptionPane.showOptionDialog(null, forPassword, "Enter Password", JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[1]);
+        if(option == 0){
+            password = new String(pass.getPassword());
+            BillMailer bm = new BillMailer(password);
+            if(bm.mailBill(generateBill(), customerEmail, billNo)){
+                return true;
+            }
         }
         return false;
     }

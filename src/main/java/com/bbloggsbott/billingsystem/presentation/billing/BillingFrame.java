@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,9 +45,16 @@ public class BillingFrame extends JFrame implements ActionListener {
     Long billNoValue;
 
     public BillingFrame(User user) {
+        setTitle("Billing");
         setLayout(new BorderLayout(10, 5));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.user = user;
+        try {
+            ImageIcon img = new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("billLogo.png")));
+            setIconImage(img.getImage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         totalPrice = 0;
         billNoValue = BillCreator.getBillNo();
         title = new JLabel("Billing");
@@ -83,6 +92,7 @@ public class BillingFrame extends JFrame implements ActionListener {
         JPanel billNoPanel = new JPanel(new FlowLayout());
         billNoLabel = new JLabel("Bill No");
         billNo = new JTextField(Long.toString(billNoValue), 5);
+        billNo.setEditable(false);
         billNoPanel.add(billNoLabel);
         billNoPanel.add(billNo);
 
@@ -164,7 +174,6 @@ public class BillingFrame extends JFrame implements ActionListener {
                 totalPrice = totalPrice + sellPrice;
                 total.setText(Double.toString(totalPrice));
                 items.add(toStringArray(toAdd));
-                System.out.println(items);
                 billTableModel.addRow(items.get(items.size() - 1));
             }
         } else if (e.getSource() == deleteButton) {

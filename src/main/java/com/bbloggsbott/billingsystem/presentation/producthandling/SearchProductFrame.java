@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,7 +30,14 @@ public class SearchProductFrame extends JFrame implements ActionListener{
     Object[][] items;
     DefaultTableModel resultModel;
     public SearchProductFrame(){
-        
+        setTitle("Search");
+        try {
+            ImageIcon img = new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("billLogo.png")));
+            setIconImage(img.getImage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         title = new JLabel("Search Product");
         idLabel = new JLabel("ID");
         nameLabel = new JLabel("Name");

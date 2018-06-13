@@ -162,4 +162,8 @@ public class Product {
         return toreturn;
     }
 
+    public String toString(){
+        return "Name: "+Name+"\t\tBuy Price: "+buyPrice.toString()+"\t\tSellPrice: "+sellPrice.toString()+"\t\tStock: "+stock+" "+(type.equals("true")?"No.s":"Kgs")+"\n";
+    }
+
 }

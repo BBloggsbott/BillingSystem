@@ -6,6 +6,7 @@ import com.bbloggsbott.billingsystem.presentation.producthandling.AddProductFram
 import com.bbloggsbott.billingsystem.presentation.producthandling.DeleteProductFrame;
 import com.bbloggsbott.billingsystem.presentation.producthandling.SearchProductFrame;
 import com.bbloggsbott.billingsystem.presentation.producthandling.UpdateProductFrame;
+import com.bbloggsbott.billingsystem.service.productservice.StockStatement;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -24,6 +25,7 @@ public class HomeFrame extends JFrame implements ActionListener {
     public HomeFrame(User user){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel panel = new JPanel(new SpringLayout());
+        this.user = user;
         try {
             ImageIcon img = new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("billLogo.png")));
             setIconImage(img.getImage());
@@ -82,6 +84,7 @@ public class HomeFrame extends JFrame implements ActionListener {
         updateProduct.addActionListener(this);
         billing.addActionListener(this);
         searchProduct.addActionListener(this);
+        stockStatement.addActionListener(this);
 
         setVisible(true);
         add(top,BorderLayout.NORTH);
@@ -105,6 +108,10 @@ public class HomeFrame extends JFrame implements ActionListener {
         }
         else if(e.getSource() == searchProduct){
             SearchProductFrame spf = new SearchProductFrame();
+        }
+        else if(e.getSource() == stockStatement){
+            StockStatement sStatement = new StockStatement();
+            sStatement.start();
         }
         
     }

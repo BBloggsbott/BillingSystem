@@ -6,6 +6,7 @@ import com.bbloggsbott.billingsystem.presentation.springutils.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -28,6 +29,14 @@ public class AddProductFrame extends JFrame implements ActionListener, ItemListe
     JSONObject jsonObject;
 
     public AddProductFrame(){
+        setTitle("Add Product");
+        try {
+            ImageIcon img = new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("billLogo.png")));
+            setIconImage(img.getImage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         title = new JLabel("Add Product");
         idLabel = new JLabel("ID");
         nameLabel = new JLabel("Name");

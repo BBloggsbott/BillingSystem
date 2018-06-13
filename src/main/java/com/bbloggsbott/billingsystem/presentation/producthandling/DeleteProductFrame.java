@@ -4,6 +4,7 @@ import com.bbloggsbott.billingsystem.integration.dbproductdao.Product;
 import com.bbloggsbott.billingsystem.service.productservice.ProductLookup;
 import com.bbloggsbott.billingsystem.presentation.springutils.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,6 +19,14 @@ public class DeleteProductFrame extends JFrame implements ActionListener {
     Product product;
 
     public DeleteProductFrame() {
+        setTitle("Delete Product");
+        try {
+            ImageIcon img = new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("billLogo.png")));
+            setIconImage(img.getImage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         header = new JPanel(new FlowLayout());
         footer = new JPanel(new FlowLayout());
         content = new JPanel(new SpringLayout());
