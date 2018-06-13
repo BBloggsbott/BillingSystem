@@ -18,10 +18,22 @@ import com.bbloggsbott.billingsystem.service.connectionservice.ConnectionFactory
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-public class FirstRun{
-    public FirstRun(){}
-    public boolean setUpProject(){
-        //JSONParser parser = new JSONParser();
+/**
+ * Class with method to generate the resources to run the application
+ */
+public class FirstRun {
+    /**
+     * Constructor
+     */
+    public FirstRun() {
+    }
+
+    /**
+     * Function to create the dependencies for the running of the application
+     * 
+     * @return boolean Success of the task
+     */
+    public boolean setUpProject() {
         try {
             System.out.println("Running application for the first time. Starting Configuration...");
             new File("db").mkdir();
@@ -37,21 +49,26 @@ public class FirstRun{
             name = scanner.next();
             System.out.print("Enter Gmail ID(yourmail@gmail.com) : ");
             String email = scanner.next();
+            System.out.println("Enter company name: ");
+            String company = scanner.next() + "\n";
+            System.out.println("Enter company address: ");
+            company = company + scanner.next() + "\n";
+            System.out.println("Enter company Phone number ");
+            company = company + scanner.next();
             System.out.println("Setting up Product Database");
             ConnectionFactory.getConnection("products");
-            if(!Product.createTable()){
+            if (!Product.createTable()) {
                 System.out.print("Product Table Creation Failed. Exiting.");
                 System.exit(0);
             }
             System.out.println("Setting up User Database");
             ConnectionFactory.getConnection("Users");
-            if(!User.createTable()){
+            if (!User.createTable()) {
                 System.out.print("Users Table Creation Failed. Exiting.");
                 System.exit(0);
-            }
-            else{
-                User user = new User(username, name, password,true);
-                if(!user.insertUser()){
+            } else {
+                User user = new User(username, name, password, true);
+                if (!user.insertUser()) {
                     System.out.print("Users Creation Failed. Exiting.");
                     System.exit(0);
                 }
@@ -61,9 +78,10 @@ public class FirstRun{
             File f = new File("billing.json");
             PrintWriter fw = new PrintWriter(f);
             jsonObject.put("firstRun", "false");
-            jsonObject.put("billNo",1);
-            jsonObject.put("productID",1);
-            jsonObject.put("emailID",email);
+            jsonObject.put("billNo", 1);
+            jsonObject.put("productID", 1);
+            jsonObject.put("emailID", email);
+            jsonObject.put("company", company);
             fw.write(jsonObject.toJSONString());
             fw.close();
             return true;

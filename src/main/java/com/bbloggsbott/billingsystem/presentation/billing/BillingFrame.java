@@ -27,6 +27,9 @@ import com.bbloggsbott.billingsystem.service.billingservice.BillCreator;
 import com.bbloggsbott.billingsystem.service.productservice.ProductLookup;
 import com.bbloggsbott.billingsystem.service.productservice.StockUpdater;
 
+/**
+ * The JFrame for the GUI of Billing
+ */
 public class BillingFrame extends JFrame implements ActionListener {
     JLabel title, idLabel, nameLabel, priceLabel, qtyLabel, rateLabel, totalLabel, customerNameLabel,
             customerEmailLabel, billNoLabel;
@@ -44,6 +47,11 @@ public class BillingFrame extends JFrame implements ActionListener {
     double sellPrice, totalPrice;
     Long billNoValue;
 
+    /**
+     * Constructor of the Billing Interface
+     * 
+     * @param user The user performing the billing task
+     */
     public BillingFrame(User user) {
         setTitle("Billing");
         setLayout(new BorderLayout(10, 5));
@@ -157,6 +165,11 @@ public class BillingFrame extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    /**
+     * Event Handler for the Action Event
+     * 
+     * @param e The Action Event
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addButton) {
@@ -180,13 +193,13 @@ public class BillingFrame extends JFrame implements ActionListener {
             items.remove(billTable.getSelectedRow());
             billProducts.remove(billTable.getSelectedRow());
             Double value = Double.parseDouble((String) billTableModel.getValueAt(billTable.getSelectedRow(), 3));
-            total.setText(Double.toString(Double.parseDouble(total.getText())-value));
+            total.setText(Double.toString(Double.parseDouble(total.getText()) - value));
             billTableModel.removeRow(billTable.getSelectedRow());
         } else if (e.getSource() == qty) {
-            
+
         } else if (e.getSource() == generateBillButton) {
             if (!customerName.getText().isEmpty() && !customerEmail.getText().isEmpty()) {
-                if(!StockUpdater.reduceStock(billProducts)){
+                if (!StockUpdater.reduceStock(billProducts)) {
                     return;
                 }
                 BillCreator bc = new BillCreator(user, customerName.getText(), customerEmail.getText(),
@@ -196,9 +209,8 @@ public class BillingFrame extends JFrame implements ActionListener {
                     dispose();
                 }
             }
-        }
-        else if(e.getSource() == getProduct){
-            if(qty.getText().isEmpty()){
+        } else if (e.getSource() == getProduct) {
+            if (qty.getText().isEmpty()) {
                 qty.setText("1");
             }
             product = ProductLookup.lookupByID(Integer.parseInt(id.getText())).get(0);
@@ -210,8 +222,12 @@ public class BillingFrame extends JFrame implements ActionListener {
         }
     }
 
-    
-
+    /**
+     * Function to converts List of String array into a 2D String Array
+     * 
+     * @param items The List for conversion
+     * @return Converted data
+     */
     public String[][] getItemsData(List<String[]> items) {
         String[][] itemsData = new String[items.size()][];
         int i, size = items.size();
@@ -221,15 +237,26 @@ public class BillingFrame extends JFrame implements ActionListener {
         return itemsData;
     }
 
+    /**
+     * Function to convert ArrayList of string to array of strings
+     * 
+     * @param al The ArrayList to be converted
+     * @return Converted data
+     */
     public String[] toStringArray(ArrayList<String> al) {
         String[] toReturn = { al.get(0), al.get(1), al.get(2), al.get(3) };
         return toReturn;
     }
 
-    public String[] getIdStock(){
-        String[] toreturn = {id.getText(),qty.getText()};
+    /**
+     * Function to get the id and change in stock of the items in the bill ad String
+     * array
+     * 
+     * @return The id and change in stock of products
+     */
+    public String[] getIdStock() {
+        String[] toreturn = { id.getText(), qty.getText() };
         return toreturn;
     }
 
 }
-

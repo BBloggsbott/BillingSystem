@@ -6,6 +6,7 @@ import com.bbloggsbott.billingsystem.presentation.producthandling.AddProductFram
 import com.bbloggsbott.billingsystem.presentation.producthandling.DeleteProductFrame;
 import com.bbloggsbott.billingsystem.presentation.producthandling.SearchProductFrame;
 import com.bbloggsbott.billingsystem.presentation.producthandling.UpdateProductFrame;
+import com.bbloggsbott.billingsystem.presentation.userhandling.UserHomeFrame;
 import com.bbloggsbott.billingsystem.service.productservice.StockStatement;
 
 import javax.imageio.ImageIO;
@@ -14,6 +15,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The JFrame for the GUI of Main Menu
+ */
 public class HomeFrame extends JFrame implements ActionListener {
 
     private JLabel title;
@@ -22,6 +26,10 @@ public class HomeFrame extends JFrame implements ActionListener {
     private GridBagConstraints gbc;
     User user;
 
+    /**
+     * Constructor of the Main Menu
+     * @param user The user of the session
+     */
     public HomeFrame(User user){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel panel = new JPanel(new SpringLayout());
@@ -71,7 +79,7 @@ public class HomeFrame extends JFrame implements ActionListener {
         gbc.gridwidth = 2;
         bottom.add(stockStatement,gbc);
 
-        if(user.getAdmin()){
+        if (user.getAdmin()){
             userManagement = new JButton("Users");
             gbc.gridx = 0;
             gbc.gridy = 4;
@@ -92,6 +100,11 @@ public class HomeFrame extends JFrame implements ActionListener {
         setSize(300,300);
     }
 
+    /**
+     * Event Handler for the Action Event
+     * 
+     * @param e The Action Event
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == addProduct){
@@ -112,6 +125,9 @@ public class HomeFrame extends JFrame implements ActionListener {
         else if(e.getSource() == stockStatement){
             StockStatement sStatement = new StockStatement();
             sStatement.start();
+        }
+        else if(e.getSource() == userManagement){
+            UserHomeFrame uhf = new UserHomeFrame();
         }
         
     }

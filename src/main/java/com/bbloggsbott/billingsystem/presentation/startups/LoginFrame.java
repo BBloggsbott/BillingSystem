@@ -12,22 +12,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 
+/**
+ * The JFrame for the GUI of the Login Screen
+ */
 public class LoginFrame extends JFrame implements ActionListener {
     private JLabel username, password;
     private JTextField usernameText;
     private JPasswordField passwordText;
-    private JButton login,exit;
+    private JButton login, exit;
     User user;
 
-    public LoginFrame(){
+    /**
+     * Constructor of the Login interface
+     */
+    public LoginFrame() {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel panel = new JPanel(new SpringLayout());
-        try{
+        try {
             ImageIcon img = new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("billLogo.png")));
             setIconImage(img.getImage());
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -45,12 +50,12 @@ public class LoginFrame extends JFrame implements ActionListener {
         panel.add(login);
         panel.add(exit);
 
-        SpringUtilities.makeGrid(panel,3,2,10,50,10,80);
-        add(panel,BorderLayout.CENTER);
+        SpringUtilities.makeGrid(panel, 3, 2, 10, 50, 10, 80);
+        add(panel, BorderLayout.CENTER);
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new FlowLayout());
         titlePanel.add(new JLabel("\nBilling Login"));
-        add(titlePanel,BorderLayout.NORTH);
+        add(titlePanel, BorderLayout.NORTH);
 
         login.addActionListener(this);
         exit.addActionListener(this);
@@ -59,16 +64,19 @@ public class LoginFrame extends JFrame implements ActionListener {
         pack();
     }
 
+    /**
+     * Event Handler for the Action Event
+     * 
+     * @param e The Action Event
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == login){
-            if(usernameText.getText().isEmpty()){
-                JOptionPane.showMessageDialog(this,"Please Enter Username");
-            }
-            else if(Arrays.toString(passwordText.getPassword()).isEmpty()){
-                JOptionPane.showMessageDialog(this,"Please Enter Password");
-            }
-            else{
+        if (e.getSource() == login) {
+            if (usernameText.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please Enter Username");
+            } else if (Arrays.toString(passwordText.getPassword()).isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please Enter Password");
+            } else {
                 user = new User(usernameText.getText(), new String(passwordText.getPassword()));
                 try {
                     user.login();
@@ -76,13 +84,12 @@ public class LoginFrame extends JFrame implements ActionListener {
                     new HomeFrame(user);
 
                 } catch (UserNotFoundException e1) {
-                    JOptionPane.showMessageDialog(this,"Username not Found");
+                    JOptionPane.showMessageDialog(this, "Username not Found");
                 } catch (IncorrectPasswordException e1) {
-                    JOptionPane.showMessageDialog(this,"Incorrect Password");
+                    JOptionPane.showMessageDialog(this, "Incorrect Password");
                 }
             }
-        }
-        else if(e.getSource() == exit){
+        } else if (e.getSource() == exit) {
             dispose();
         }
     }

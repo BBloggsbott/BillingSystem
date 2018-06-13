@@ -11,6 +11,9 @@ import org.json.simple.parser.JSONParser;
 
 import javax.activation.*;
 
+/**
+ * Class providins service to store and mail bills
+ */
 public class BillMailer {
     String username;
     String password;
@@ -18,7 +21,12 @@ public class BillMailer {
     Session session;
     JSONObject jsonObject;
 
-    public BillMailer(String password){
+    /**
+     * Constructor for BillMailer. Initialises necessary objects
+     * 
+     * @param password The Gmail password for connecting to smtp.gmail.com
+     */
+    public BillMailer(String password) {
         this.password = password;
         JSONParser parser = new JSONParser();
         try {
@@ -39,17 +47,24 @@ public class BillMailer {
         });
     }
 
-    public boolean mailBill(String bill, String customerEmail, String billNo){
+    /**
+     * Function to mail the bill
+     * 
+     * @param bill          The bill as String
+     * @param customerEmail The Email ID of the customer
+     * @param billNo        The bill number of the bill
+     * @return boolean Success of the task
+     */
+    public boolean mailBill(String bill, String customerEmail, String billNo) {
 
-        try{
+        try {
             System.out.println("Creating file for bill");
             PrintWriter writer;
-            writer = new PrintWriter("bills/"+billNo+".txt", "UTF-8");
+            writer = new PrintWriter("bills/" + billNo + ".txt", "UTF-8");
             writer.println(bill);
             writer.close();
             System.out.println("Bill file created");
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -62,17 +77,17 @@ public class BillMailer {
 
         try {
             System.out.println("Sending mail");
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("johndoe@gmail.com"));
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(customerEmail));
-            message.setSubject("Bill No: "+billNo);
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("johndoe@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(customerEmail));
+            message.setSubject("Bill No: " + billNo);
             MimeBodyPart messageBodyPart = new MimeBodyPart();
             MimeBodyPart messageBodyPart2 = new MimeBodyPart();
 
             Multipart multipart = new MimeMultipart();
 
             messageBodyPart = new MimeBodyPart();
-            String file = "bills/"+billNo+".txt";
+            String file = "bills/" + billNo + ".txt";
             String fileName = "Bill";
             DataSource source = new FileDataSource(file);
             messageBodyPart.setDataHandler(new DataHandler(source));
@@ -91,8 +106,8 @@ public class BillMailer {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-    return false;
+
+        return false;
     }
 
 }

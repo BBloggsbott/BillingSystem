@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The JFrame for the GUI of Deleting a product from the database
+ */
 public class DeleteProductFrame extends JFrame implements ActionListener {
 
     JLabel idLabel, nameLabel, title;
@@ -18,6 +21,9 @@ public class DeleteProductFrame extends JFrame implements ActionListener {
     JPanel header, content, footer;
     Product product;
 
+    /**
+     * Constructor of the Delete Product Interface
+     */
     public DeleteProductFrame() {
         setTitle("Delete Product");
         try {
@@ -61,16 +67,19 @@ public class DeleteProductFrame extends JFrame implements ActionListener {
         setSize(300, 300);
     }
 
-
+    /**
+     * Event Handler for the Action Event
+     * 
+     * @param e The Action Event
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == getProduct){
+        if (e.getSource() == getProduct) {
             product = ProductLookup.lookupByID(Integer.parseInt(id.getText())).get(0);
             name.setText(product.getName());
-        }
-        else if(e.getSource() == deleteButton){
+        } else if (e.getSource() == deleteButton) {
             product = new Product(Integer.parseInt(id.getText()));
-            if(product.deleteProduct()){
+            if (product.deleteProduct()) {
                 name.setText("");
                 id.setText("");
             }

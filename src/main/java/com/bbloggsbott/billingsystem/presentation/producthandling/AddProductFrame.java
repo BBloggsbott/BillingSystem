@@ -17,6 +17,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.math.BigDecimal;
 
+/**
+ * The JFrame for the GUI of Adding a product to the database
+ */
 public class AddProductFrame extends JFrame implements ActionListener, ItemListener {
 
     JPanel header, content, footer;
@@ -28,7 +31,10 @@ public class AddProductFrame extends JFrame implements ActionListener, ItemListe
     boolean typeValue;
     JSONObject jsonObject;
 
-    public AddProductFrame(){
+    /**
+     * Constructor of the Add Product Interface
+     */
+    public AddProductFrame() {
         setTitle("Add Product");
         try {
             ImageIcon img = new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("billLogo.png")));
@@ -50,11 +56,11 @@ public class AddProductFrame extends JFrame implements ActionListener, ItemListe
         buy = new JTextField();
         sell = new JTextField();
         stock = new JTextField();
-        type = new JCheckBox("No.s");       //If unchecked, Considers as Kgs
+        type = new JCheckBox("No.s"); // If unchecked, Considers as Kgs
         typeValue = false;
         addButton = new JButton("Add");
         clearButton = new JButton("Clear");
-        header = new JPanel( new FlowLayout());
+        header = new JPanel(new FlowLayout());
         content = new JPanel(new SpringLayout());
         footer = new JPanel(new FlowLayout());
 
@@ -70,12 +76,12 @@ public class AddProductFrame extends JFrame implements ActionListener, ItemListe
         content.add(sell);
         content.add(type);
         content.add(stock);
-        SpringUtilities.makeGrid(content,2,6,10,20,10,10);
+        SpringUtilities.makeGrid(content, 2, 6, 10, 20, 10, 10);
         header.add(title);
         footer.add(addButton);
         footer.add(clearButton);
-        content.setSize(800,300);
-        add(header,BorderLayout.NORTH);
+        content.setSize(800, 300);
+        add(header, BorderLayout.NORTH);
         add(content, BorderLayout.CENTER);
         add(footer, BorderLayout.SOUTH);
 
@@ -96,46 +102,53 @@ public class AddProductFrame extends JFrame implements ActionListener, ItemListe
         type.addItemListener(this);
 
         setVisible(true);
-        setSize(800,170);
+        setSize(800, 170);
 
     }
 
-
+    /**
+     * Event Handler for the Action Event
+     * 
+     * @param e The Action Event
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == clearButton){
+        if (e.getSource() == clearButton) {
             name.setText("");
             buy.setText("");
             sell.setText("");
             stock.setText("");
-        }
-        else if(e.getSource() == addButton){
-            product = new Product(Integer.parseInt(id.getText()),name.getText(),new BigDecimal(buy.getText()),new BigDecimal(sell.getText()),Boolean.toString(typeValue),new BigDecimal(stock.getText()));
-            if(product.insertProduct()){
-                int newID = Integer.parseInt(id.getText())+1;
-                id.setText(newID+"");
-                try{
-                FileWriter fw = new FileWriter("billing.json");
-                jsonObject.put("productID",new Long(newID));
-                fw.write(jsonObject.toJSONString());
-                fw.close();
-                }
-                catch(Exception ex){
+        } else if (e.getSource() == addButton) {
+            product = new Product(Integer.parseInt(id.getText()), name.getText(), new BigDecimal(buy.getText()),
+                    new BigDecimal(sell.getText()), Boolean.toString(typeValue), new BigDecimal(stock.getText()));
+            if (product.insertProduct()) {
+                int newID = Integer.parseInt(id.getText()) + 1;
+                id.setText(newID + "");
+                try {
+                    FileWriter fw = new FileWriter("billing.json");
+                    jsonObject.put("productID", new Long(newID));
+                    fw.write(jsonObject.toJSONString());
+                    fw.close();
+                } catch (Exception ex) {
                     ex.printStackTrace();
-                }
-                finally{
-                name.setText("");
-                buy.setText("");
-                sell.setText("");
-                stock.setText("");
+                } finally {
+                    name.setText("");
+                    buy.setText("");
+                    sell.setText("");
+                    stock.setText("");
                 }
             }
         }
     }
 
+    /**
+     * Event Handler for the Item Event
+     * 
+     * @param e The Item Event
+     */
     @Override
     public void itemStateChanged(ItemEvent e) {
-        if(e.getSource() == type){
+        if (e.getSource() == type) {
             typeValue = !typeValue;
         }
     }

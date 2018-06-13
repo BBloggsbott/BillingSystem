@@ -1,4 +1,4 @@
-package com.bbloggsbott.billingsystem.presentation.producthandling;
+package com.bbloggsbott.billingsystem.presentation.userhandling;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -17,26 +17,26 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import com.bbloggsbott.billingsystem.service.productservice.ProductLookup;
+import com.bbloggsbott.billingsystem.service.userservice.UserLookup;
 
 /**
- * The JFrame for the GUI of Search a product from the database
+ * The JFrame for the GUI of Searching a user from the database
  */
-public class SearchProductFrame extends JFrame implements ActionListener{
+public class SearchUserFrame extends JFrame implements ActionListener {
     JPanel header, content;
-    JLabel title, idLabel, nameLabel;
-    JTextField id, name;
-    JButton getProduct;
-    String[] columnNames = { "ID", "Name", "Buy Price", "Sell Price", "Type", "Stock" };;
+    JLabel title, usernameLabel, nameLabel;
+    JTextField username, name;
+    JButton getUser, getAdmins, getNonAdmins;
+    String[] columnNames = { "Username", "Name", "Password", "Admin" };;
     JTable resultTable;
     JScrollPane scrollPane;
     Object[][] items;
     DefaultTableModel resultModel;
 
     /**
-     * Constructor of the Search Product Interface
+     * Constructor of the Search User Interface
      */
-    public SearchProductFrame(){
+    public SearchUserFrame() {
         setTitle("Search");
         try {
             ImageIcon img = new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("billLogo.png")));
@@ -45,13 +45,15 @@ public class SearchProductFrame extends JFrame implements ActionListener{
             e.printStackTrace();
         }
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        title = new JLabel("Search Product");
-        idLabel = new JLabel("ID");
+        title = new JLabel("Search User");
+        usernameLabel = new JLabel("Username");
         nameLabel = new JLabel("Name");
 
-        id = new JTextField(8);
+        username = new JTextField(8);
         name = new JTextField(10);
-        getProduct = new JButton("Get Products");
+        getUser = new JButton("Get Users");
+        getAdmins = new JButton("Get Admins");
+        getNonAdmins = new JButton("Get Non Admins");
 
         header = new JPanel(new GridLayout(3, 1));
         JPanel header1 = new JPanel(new FlowLayout());
@@ -59,18 +61,20 @@ public class SearchProductFrame extends JFrame implements ActionListener{
         JPanel header3 = new JPanel(new FlowLayout());
         JPanel footer = new JPanel(new FlowLayout());
         header1.add(title);
-        header2.add(idLabel);
-        header2.add(id);
+        header2.add(usernameLabel);
+        header2.add(username);
         header3.add(nameLabel);
         header3.add(name);
-        footer.add(getProduct);
+        footer.add(getUser);
+        footer.add(getAdmins);
+        footer.add(getNonAdmins);
 
         header.add(header1);
         header.add(header2);
         header.add(header3);
 
         resultModel = new DefaultTableModel();
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 4; i++) {
             resultModel.addColumn(columnNames[i]);
         }
         resultTable = new JTable(resultModel);
@@ -84,7 +88,9 @@ public class SearchProductFrame extends JFrame implements ActionListener{
         add(content, BorderLayout.CENTER);
         add(footer, BorderLayout.SOUTH);
 
-        getProduct.addActionListener(this);
+        getUser.addActionListener(this);
+        getAdmins.addActionListener(this);
+        getNonAdmins.addActionListener(this);
 
         setSize(900, 400);
         setVisible(true);
@@ -97,22 +103,38 @@ public class SearchProductFrame extends JFrame implements ActionListener{
      * @param e The Action Event
      */
     @Override
-    public void actionPerformed(ActionEvent e){
-        if(e.getSource() == getProduct){
-            if (!id.getText().isEmpty()) {
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == getUser) {
+            if (!username.getText().isEmpty()) {
                 name.setText("");
-                items = ProductLookup.toTwoDArray(ProductLookup.lookupByID(Integer.parseInt(id.getText())));
+                items = UserLookup.toTwoDArray(UserLookup.lookupByUserName(username.getText()));
                 resultModel.setRowCount(0);
                 for (int i = 0; i < items.length; i++) {
                     resultModel.addRow(items[i]);
                 }
             } else if (!name.getText().isEmpty()) {
-                id.setText("");
-                items = ProductLookup.toTwoDArray(ProductLookup.lookupByName(name.getText()));
+                username.setText("");
+                items = UserLookup.toTwoDArray(UserLookup.lookupByUserName(name.getText()));
                 resultModel.setRowCount(0);
                 for (int i = 0; i < items.length; i++) {
                     resultModel.addRow(items[i]);
                 }
+            }
+        } else if (e.getSource() == getAdmins) {
+            name.setText("");
+            username.setText("");
+            items = UserLookup.toTwoDArray(UserLookup.lookupAllAdmins());
+            resultModel.setRowCount(0);
+            for (int i = 0; i < items.length; i++) {
+                resultModel.addRow(items[i]);
+            }
+        } else if (e.getSource() == getNonAdmins) {
+            name.setText("");
+            username.setText("");
+            items = UserLookup.toTwoDArray(UserLookup.lookupAllNonAdmins());
+            resultModel.setRowCount(0);
+            for (int i = 0; i < items.length; i++) {
+                resultModel.addRow(items[i]);
             }
         }
     }

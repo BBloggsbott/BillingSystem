@@ -13,8 +13,10 @@ import com.bbloggsbott.billingsystem.integration.dbproductdao.Product;
 import com.bbloggsbott.billingsystem.presentation.springutils.*;
 import com.bbloggsbott.billingsystem.service.productservice.ProductLookup;
 
-
-public class UpdateProductFrame extends JFrame implements ActionListener, ItemListener{
+/**
+ * The JFrame for the GUI of Updating a product in the database
+ */
+public class UpdateProductFrame extends JFrame implements ActionListener, ItemListener {
     JPanel header, content, footer;
     JLabel title, idLabel, nameLabel, buyLabel, sellLabel, typeLabel, stockLabel;
     JTextField id, name, buy, sell, stock;
@@ -23,7 +25,7 @@ public class UpdateProductFrame extends JFrame implements ActionListener, ItemLi
     Product product;
     boolean typeValue;
 
-    public UpdateProductFrame(){
+    public UpdateProductFrame() {
         setTitle("Update Product");
         try {
             ImageIcon img = new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("billLogo.png")));
@@ -44,12 +46,12 @@ public class UpdateProductFrame extends JFrame implements ActionListener, ItemLi
         buy = new JTextField();
         sell = new JTextField();
         stock = new JTextField();
-        type = new JCheckBox("No.s");       //If unchecked, Considers as Kgs
+        type = new JCheckBox("No.s"); // If unchecked, Considers as Kgs
         typeValue = false;
         updateButton = new JButton("Update");
         clearButton = new JButton("Clear");
         getProduct = new JButton("Get Product");
-        header = new JPanel( new FlowLayout());
+        header = new JPanel(new FlowLayout());
         content = new JPanel(new SpringLayout());
         footer = new JPanel(new FlowLayout());
 
@@ -65,13 +67,13 @@ public class UpdateProductFrame extends JFrame implements ActionListener, ItemLi
         content.add(sell);
         content.add(type);
         content.add(stock);
-        SpringUtilities.makeGrid(content,2,6,10,20,10,10);
+        SpringUtilities.makeGrid(content, 2, 6, 10, 20, 10, 10);
         header.add(title);
         footer.add(getProduct);
         footer.add(updateButton);
         footer.add(clearButton);
-        content.setSize(800,300);
-        add(header,BorderLayout.NORTH);
+        content.setSize(800, 300);
+        add(header, BorderLayout.NORTH);
         add(content, BorderLayout.CENTER);
         add(footer, BorderLayout.SOUTH);
 
@@ -81,10 +83,15 @@ public class UpdateProductFrame extends JFrame implements ActionListener, ItemLi
         type.addItemListener(this);
 
         setVisible(true);
-        setSize(800,170);
+        setSize(800, 170);
 
     }
 
+    /**
+     * Event Handler for the Action Event
+     * 
+     * @param e The Action Event
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == clearButton) {
@@ -102,8 +109,7 @@ public class UpdateProductFrame extends JFrame implements ActionListener, ItemLi
                 sell.setText("");
                 stock.setText("");
             }
-        }
-        else if(e.getSource() == getProduct){
+        } else if (e.getSource() == getProduct) {
             product = ProductLookup.lookupByID(Integer.parseInt(id.getText())).get(0);
             name.setText(product.getName());
             sell.setText(Double.toString(product.getSellPrice().doubleValue()));
@@ -114,6 +120,11 @@ public class UpdateProductFrame extends JFrame implements ActionListener, ItemLi
         }
     }
 
+    /**
+     * Event Handler for the Item Event
+     * 
+     * @param e The Item Event
+     */
     @Override
     public void itemStateChanged(ItemEvent e) {
         if (e.getSource() == type) {

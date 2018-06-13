@@ -8,6 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * The data access object for products
+ */
 public class Product {
     private int ID;
     private String Name;
@@ -15,11 +18,25 @@ public class Product {
     private String type;
     private static Connection conn;
 
-    public Product(int ID){
+    /**
+     * Constructor for the DAO
+     * 
+     * @param ID The ID of the product
+     */
+    public Product(int ID) {
         this.ID = ID;
     }
 
-    public Product(String Name, BigDecimal buyPrice, BigDecimal sellPrice, String type, BigDecimal stock){
+    /**
+     * Constructor for the DAO
+     * 
+     * @param Name      Name of the Product
+     * @param buyPrice  Buying price of the product
+     * @param sellPrice Selling price of the product
+     * @param type      The Type of the product(No.s or Kg)
+     * @param stock     The current stock of the product
+     */
+    public Product(String Name, BigDecimal buyPrice, BigDecimal sellPrice, String type, BigDecimal stock) {
         this.Name = Name;
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
@@ -27,7 +44,17 @@ public class Product {
         this.stock = stock;
     }
 
-    public Product(int ID, String Name, BigDecimal buyPrice, BigDecimal sellPrice, String type, BigDecimal stock){
+    /**
+     * Constructor for the DAO
+     * 
+     * @param ID        ID of the Product
+     * @param Name      Name of the Product
+     * @param buyPrice  Buying price of the product
+     * @param sellPrice Selling price of the product
+     * @param type      The Type of the product(No.s or Kg)
+     * @param stock     The current stock of the product
+     */
+    public Product(int ID, String Name, BigDecimal buyPrice, BigDecimal sellPrice, String type, BigDecimal stock) {
         this.ID = ID;
         this.Name = Name;
         this.buyPrice = buyPrice;
@@ -36,59 +63,117 @@ public class Product {
         this.stock = stock;
     }
 
-    public int getID(){
+    /**
+     * Function to get the ID of the Product
+     * 
+     * @return int The ID of the product
+     */
+    public int getID() {
         return ID;
     }
 
-    public String getName(){
+    /**
+     * Function to get the name of the Product
+     * 
+     * @return String The Name of the product
+     */
+    public String getName() {
         return Name;
     }
 
-    public void setName(String Name){
+    /**
+     * Function to set the name of the Product
+     * 
+     * @param Name The new name of the product
+     */
+    public void setName(String Name) {
         this.Name = Name;
     }
 
-
-    public BigDecimal getBuyPrice(){
+    /**
+     * Function to get the BuyPrice of the Product
+     * 
+     * @return BigDecimal BuyPrice of the product
+     */
+    public BigDecimal getBuyPrice() {
         return buyPrice;
     }
 
-    public void setBuyPrice(BigDecimal buyPrice){
+    /**
+     * Function to set the BuyPrice of the Product
+     * 
+     * @param buyPrice The new BuyPrice of the product
+     */
+    public void setBuyPrice(BigDecimal buyPrice) {
         this.buyPrice = buyPrice;
     }
 
-    public BigDecimal getSellPrice(){
+    /**
+     * Function to get the SellPrice of the Product
+     * 
+     * @return BigDecimal SellPrice of the product
+     */
+    public BigDecimal getSellPrice() {
         return sellPrice;
     }
 
-    public void setSellPrice(BigDecimal sellPrice){
+    /**
+     * Function to set the SellPrice of the Product
+     * 
+     * @param sellPrice The new SellPrice of the product
+     */
+    public void setSellPrice(BigDecimal sellPrice) {
         this.sellPrice = sellPrice;
     }
 
-    public String getType(){
+    /**
+     * Function to get the type of the product
+     * 
+     * @return String The type of the Product
+     */
+    public String getType() {
         return type;
     }
 
-    public void setType(String type){
+    /**
+     * Function to set the tpe of the product
+     * 
+     * @param type The new Type of the product
+     */
+    public void setType(String type) {
         this.type = type;
     }
 
-    public BigDecimal getStock(){
+    /**
+     * Function to get stock of the product
+     * 
+     * @return BigDecimal The stock of the product
+     */
+    public BigDecimal getStock() {
         return stock;
     }
 
-    public void setStock(BigDecimal stock){
+    /**
+     * Function to set the stock of the product
+     * 
+     * @param stock The new stock of the product
+     */
+    public void setStock(BigDecimal stock) {
         this.stock = stock;
     }
 
-
-
-    public static boolean createTable(){
+    /**
+     * Function to create the table for products
+     * 
+     * @return boolean Success of the task
+     */
+    public static boolean createTable() {
         conn = ConnectionFactory.getConnection("products");
         try {
             assert conn != null;
             Statement s = conn.createStatement();
-            s.executeUpdate("create table products (ID integer primary key, name varchar(50), buyprice Decimal, sellprice decimal, type varchar(5), stock decimal)");
+            s.executeUpdate(
+                    "create table products (ID integer primary key, name varchar(50), buyprice Decimal, sellprice decimal, type varchar(5), stock decimal)");
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -97,8 +182,12 @@ public class Product {
 
     }
 
-
-    public boolean insertProduct(){
+    /**
+     * Function to add products to the table
+     * 
+     * @return boolean Success of the task
+     */
+    public boolean insertProduct() {
         conn = ConnectionFactory.getConnection("products");
         PreparedStatement ps = null;
         try {
@@ -106,10 +195,10 @@ public class Product {
             ps = conn.prepareStatement("insert into products values(?,?,?,?,?,?)");
             ps.setInt(1, ID);
             ps.setString(2, Name);
-            ps.setBigDecimal(3,buyPrice);
-            ps.setBigDecimal(4,sellPrice);
-            ps.setString(5,type);
-            ps.setBigDecimal(6,stock);
+            ps.setBigDecimal(3, buyPrice);
+            ps.setBigDecimal(4, sellPrice);
+            ps.setString(5, type);
+            ps.setBigDecimal(6, stock);
             ps.executeUpdate();
             conn.close();
             return true;
@@ -119,8 +208,12 @@ public class Product {
         return false;
     }
 
-
-    public boolean deleteProduct(){
+    /**
+     * Function to delete products from the table
+     * 
+     * @return boolean Success of the task
+     */
+    public boolean deleteProduct() {
         conn = ConnectionFactory.getConnection("products");
         PreparedStatement ps;
         try {
@@ -136,17 +229,23 @@ public class Product {
         return false;
     }
 
-    public boolean updateProduct(){
+    /**
+     * Function to update products in the table
+     * 
+     * @return boolean Success of the task
+     */
+    public boolean updateProduct() {
         conn = ConnectionFactory.getConnection("products");
         PreparedStatement ps = null;
         try {
             assert conn != null;
-            ps = conn.prepareStatement("update products set name = ?, buyprice = ?, sellprice = ?, type = ?, stock = ? where id = ? ");
+            ps = conn.prepareStatement(
+                    "update products set name = ?, buyprice = ?, sellprice = ?, type = ?, stock = ? where id = ? ");
             ps.setString(1, Name);
-            ps.setBigDecimal(2,buyPrice);
-            ps.setBigDecimal(3,sellPrice);
-            ps.setString(4,type);
-            ps.setBigDecimal(5,stock);
+            ps.setBigDecimal(2, buyPrice);
+            ps.setBigDecimal(3, sellPrice);
+            ps.setString(4, type);
+            ps.setBigDecimal(5, stock);
             ps.setInt(6, ID);
             ps.executeUpdate();
             conn.close();
@@ -157,13 +256,25 @@ public class Product {
         return false;
     }
 
-    public String[] toStringArray(){
-        String[] toreturn = {Integer.toString(ID), Name, buyPrice.toString(), sellPrice.toString(), type, stock.toString()};
+    /**
+     * Function to return product details as a string array
+     * 
+     * @return The details as String Array
+     */
+    public String[] toStringArray() {
+        String[] toreturn = { Integer.toString(ID), Name, buyPrice.toString(), sellPrice.toString(), type,
+                stock.toString() };
         return toreturn;
     }
 
-    public String toString(){
-        return "Name: "+Name+"\t\tBuy Price: "+buyPrice.toString()+"\t\tSellPrice: "+sellPrice.toString()+"\t\tStock: "+stock+" "+(type.equals("true")?"No.s":"Kgs")+"\n";
+    /**
+     * Function to return product details as a string
+     * 
+     * @return String The details as String
+     */
+    public String toString() {
+        return "Name: " + Name + "\t\tBuy Price: " + buyPrice.toString() + "\t\tSellPrice: " + sellPrice.toString()
+                + "\t\tStock: " + stock + " " + (type.equals("true") ? "No.s" : "Kgs") + "\n";
     }
 
 }
