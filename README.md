@@ -6,7 +6,7 @@
 ![Interface](https://i.imgur.com/w2aHVqm.png)
 
 # About
-A Billing system that can be used in stores. Requires Java 8. Read the [instructions](https://github.com/BBloggsbott/BillingSystem/wiki/Instructions) before using the application.
+A Billing system that can be used in stores. Requires Java 8. Read the [instructions](https://github.com/BBloggsbott/BillingSystem/wiki/Instructions) before using the application. You can download the application from [here](https://github.com/BBloggsbott/BillingSystem/releases/tag/v1.0.0).
 
 # Features
 
