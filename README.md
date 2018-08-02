@@ -3,7 +3,7 @@
 
 ![License](https://img.shields.io/packagist/l/doctrine/orm.svg) 
 
-![Interface](https://imgur.com/KIKgGLd)
+![Interface](https://i.imgur.com/KIKgGLd.png)
 
 # About
 A Billing system that can be used in stores. Requires Java 8. Read the [instructions](https://github.com/BBloggsbott/BillingSystem/wiki/Instructions) before using the application. You can download the application from [here](https://github.com/BBloggsbott/BillingSystem/releases/tag/v1.0.0).
